@@ -10,6 +10,9 @@ public class PlayerMove : MonoBehaviour {
     public float CheckGroundRadius = 0.5f;
     public KeyCode JumpKey;
     public float JumpForce=10;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiPlier = 2f;
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
@@ -125,6 +128,14 @@ public class PlayerMove : MonoBehaviour {
 
     void Jump()
     {
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }else if (rb.velocity.y > 0 && !Input.GetKey(JumpKey))
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiPlier - 1) * Time.deltaTime;
+        }
+
         if (IsGrounded)
         {
             if (Input.GetKeyDown(JumpKey))
