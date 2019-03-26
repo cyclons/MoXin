@@ -13,6 +13,7 @@ public class PlayerMove : MonoBehaviour {
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiPlier = 2f;
 
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
@@ -41,10 +42,15 @@ public class PlayerMove : MonoBehaviour {
     void CheckGround()
     {
         IsGrounded = Physics.CheckSphere(transform.position, CheckGroundRadius,LayerMask.GetMask("Ground"));
+        if(IsGrounded)
+            animator.SetBool("IsGrounded",true);
+        else
+            animator.SetBool("IsGrounded", false);
     }
 
     void Move2d()
     {
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -82,6 +88,7 @@ public class PlayerMove : MonoBehaviour {
 
     void Move3d()
     {
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");    
 
@@ -135,6 +142,7 @@ public class PlayerMove : MonoBehaviour {
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiPlier - 1) * Time.deltaTime;
         }
+       
 
         if (IsGrounded)
         {
@@ -142,6 +150,7 @@ public class PlayerMove : MonoBehaviour {
             {
                 rb.velocity = transform.up * JumpForce;
             }
+            
         }
     }
 }

@@ -224,7 +224,7 @@ ModelImporter:
     - serializedVersion: 16
       name: StrongAttk4
       takeName: Take 001
-      firstFrame: 102
+      firstFrame: 122
       lastFrame: 216
       wrapMode: 0
       orientationOffsetY: 0
