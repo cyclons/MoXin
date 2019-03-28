@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour {
     public bool IsGrounded = true;
     public float CheckGroundRadius = 0.5f;
     public KeyCode JumpKey;
+    public KeyCode DashKey;
     public float JumpForce=10;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiPlier = 2f;
@@ -28,11 +29,21 @@ public class PlayerMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Jump();
+        if (!isDashing)
+        {
+            Dash();
+            Jump();
+
+        }
     }
 
     private void FixedUpdate()
     {
+        if (isDashing)
+        {
+            Dashing();
+            return;
+        }
         CheckGround();
         Move2d();
         
@@ -153,4 +164,42 @@ public class PlayerMove : MonoBehaviour {
             
         }
     }
+ 
+    private bool isDashing = false;
+    private Vector3 dashPoint;
+    private Vector3 dashDir;
+    private float dashTimer = 0;
+
+    [Header("Dash")]
+    public AnimationCurve dashCurve;
+    public float DashDistance=3;
+    public float DashTime = 1;
+    public float DashSpeed = 3;
+    void Dash()
+    {
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+
+        if (Input.GetKeyDown(DashKey))
+        {
+            dashDir = new Vector3(h, v, 0).normalized;
+            dashPoint = transform.position + dashDir * DashDistance;
+            isDashing = true;
+            dashTimer = 0;
+        }
+    }
+
+    void Dashing()
+    {
+        dashTimer += Time.deltaTime;
+        rb.useGravity = false;
+        rb.MovePosition(transform.position+dashDir*Time.deltaTime*dashCurve.Evaluate(dashTimer)*DashSpeed);
+        if (dashTimer>DashTime)
+        {
+            rb.useGravity = true;
+            isDashing = false;
+        }
+    }
+
+
 }
