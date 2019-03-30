@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 public interface IBasePlayerState  {
 
-    void Update();
-    void HandleInput();
     void OnStateEnter();
+    void HandleInput();
+    void Update();
+    void FixedUpdate();
     void OnStateExit();
 
 
