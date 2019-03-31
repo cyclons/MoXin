@@ -3,17 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
-    private float Speed = 5;
+    [HideInInspector]
     private Animator animator;
+    [HideInInspector]
     private Rigidbody rb;
     public bool IsGrounded = true;
-    public float CheckGroundRadius = 0.5f;
+
+    [Header("Move")]
+    public float Speed = 5;
+    [Header("Inputs")]
     public KeyCode JumpKey;
     public KeyCode DashKey;
+    [Header("Jump")]
     public float JumpForce=10;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiPlier = 2f;
+    public float CheckGroundRadius = 0.5f;
 
+    private bool isDashing = false;
+    private Vector3 dashPoint;
+    private Vector3 dashDir;
+    private float dashTimer = 0;
+
+    [Header("Dash")]
+    public AnimationCurve dashCurve;
+    public float DashDistance = 3;
+    public float DashTime = 1;
+    public float DashSpeed = 3;
 
     private void OnDrawGizmosSelected()
     {
@@ -33,7 +49,6 @@ public class PlayerMove : MonoBehaviour {
         {
             Dash();
             Jump();
-
         }
     }
 
@@ -165,16 +180,7 @@ public class PlayerMove : MonoBehaviour {
         }
     }
  
-    private bool isDashing = false;
-    private Vector3 dashPoint;
-    private Vector3 dashDir;
-    private float dashTimer = 0;
 
-    [Header("Dash")]
-    public AnimationCurve dashCurve;
-    public float DashDistance=3;
-    public float DashTime = 1;
-    public float DashSpeed = 3;
     void Dash()
     {
         float h = Input.GetAxis("Horizontal");
