@@ -114,19 +114,21 @@ public class PlayerMove2DState :IBasePlayerState
 
         }
 
-        
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Move"))
-        {
-            currentSpeed = Mathf.Lerp(currentSpeed, h, 0.3f);
-            animator.SetFloat("Speed", Mathf.Abs(currentSpeed));
-        }
+        currentSpeed = Mathf.Lerp(currentSpeed, h, 0.3f);
+        animator.SetFloat("Speed", Mathf.Abs(currentSpeed));
+
+        //if (animator.GetCurrentAnimatorStateInfo(0).IsName("Move"))
+        //{
+        //    currentSpeed = Mathf.Lerp(currentSpeed, h, 0.3f);
+        //    animator.SetFloat("Speed", Mathf.Abs(currentSpeed));
+        //}
 
 
     }
 
     void Jump()
     {
-        if (rb.velocity.y < 0)
+        if (rb.velocity.y <= 0)
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (controller. fallMultiplier - 1) * Time.deltaTime;
         }
@@ -140,6 +142,8 @@ public class PlayerMove2DState :IBasePlayerState
         {
             if (Input.GetKeyDown(controller.JumpKey))
             {
+                animator.SetTrigger("StartJump");
+                //animator.SetFloat("Speed", 0);
                 rb.velocity = rb.transform.up * controller.JumpForce;
             }
 
@@ -168,6 +172,7 @@ public class PlayerMove2DState :IBasePlayerState
                 isDashing = true;
                 dashTimer = 0;
                 controller.CanDash = false;
+                animator.SetTrigger("Dash");
             }
         }
     }
